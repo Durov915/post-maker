@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image Stacker</title>
-    <!-- this is for capture #imagecontainer div html2canvas library -->
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
         body {
@@ -33,12 +32,10 @@
             border-radius: 8px;
             margin-bottom: 20px;
             background-image: url();
-            /* https://www.creativehatti.com/wp-content/uploads/edd/2021/04/Shree-Ram-Navami-illustration-of-lord-Ram-with-social-media-banner-27-large.jpg */
             background-size: cover;
             background-repeat: no-repeat;
             resize: auto;
         }
-
 
         #imgholder {
             height: 8vw;
@@ -107,9 +104,7 @@
         }
 
         #nameContainer img {
-            vertical-align: middle;
-            max-height: 80%;
-            margin-right: 5px;
+            display: none; /* Hide logo */
         }
 
 
@@ -133,7 +128,7 @@
         @media (max-width: 600px) {
 
             #container {
-                width: 90%;
+                width: 95%;
             }
 
             #imgholder {
@@ -148,8 +143,9 @@
                 width: 80%;
             }
 
-            #nameInput {
-                width: 60%;
+            #nameInput,
+            #imageUrlInput {
+                width: 80%;
             }
         }
     </style>
@@ -165,8 +161,11 @@
             <div id="nameContainer"> </div>
         </div>
         <label for="fileInput">Choose Image</label>
+        <br>
         <input type="text" id="nameInput" placeholder="Enter your name">
+        <br>
         <input type="text" id="imageUrlInput" placeholder="Enter image URL">
+        <br>
         <button class="button-35" onclick="uploadImage()">Make Post</button>
         <button class="button-35" onclick="changeImage()">Change Image</button>
         <button class="button-35" onclick="downloadImage()">Download Image</button>
@@ -186,16 +185,6 @@
             reader.onload = function (e) {
                 imageContainer.style.backgroundImage = `url('${e.target.result}')`;
                 nameContainer.innerText = '';
-
-                const logoImg = document.createElement('img');
-                logoImg.src = 'https://www.speed-computers.com/img/sc%20logo.png';
-                logoImg.alt = 'Logo';
-                logoImg.style.marginRight = '7vw';
-                logoImg.style.height = '3vh';
-                logoImg.style.width = '1.4vw';
-                logoImg.style.marginLeft = '-9vw';
-
-                nameContainer.appendChild(logoImg);
 
                 const nameText = document.createElement('span');
                 nameText.innerText = nameInput.value;
@@ -224,12 +213,12 @@
                 allowTaint: true,
                 useCORS: true,
                 backgroundColor: null,
-                scale: 2 
+                scale: 2
             }).then(canvas => {
                 const ctx = canvas.getContext('2d');
                 ctx.fillStyle = 'orange';
                 ctx.font = 'bold 16px Arial';
-                ctx.fillText(nameContainer, 20, canvas.height - 20); 
+                ctx.fillText(nameContainer, 20, canvas.height - 20);
                 const imageData = canvas.toDataURL('image/png');
                 const tempLink = document.createElement('a');
                 tempLink.href = imageData;
@@ -241,6 +230,5 @@
         }
     </script>
 </body>
-
 
 </html>
