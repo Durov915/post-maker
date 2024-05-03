@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Stacker</title>
+    <!-- this is for capture #imagecontainer div html2canvas library -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+
+        #container {
+            text-align: center;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        #imageContainer {
+            position: relative;
+            height: 50vw;
+            max-height: 400px;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            background-image: url();
+            /* https://www.creativehatti.com/wp-content/uploads/edd/2021/04/Shree-Ram-Navami-illustration-of-lord-Ram-with-social-media-banner-27-large.jpg */
+            background-size: cover;
+            background-repeat: no-repeat;
+            resize: auto;
+        }
+
+
+        #imgholder {
+            height: 8vw;
+            width: 8vw;
+            position: absolute;
+            right: 0%;
+            bottom: 1%;
+            box-shadow: 0px 0px 20px 12px orange;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+            display: none;
+            z-index: 2;
+            border: 8px solid orange;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        label {
+            background-color: #00de0f;
+            color: #000000;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: inline-block;
+        }
+
+        label:hover {
+            background-color: #009111;
+        }
+
+        .button-35 {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: transparent 0 0 0 3px, rgba(18, 18, 18, .1) 0 6px 20px;
+            color: #121212;
+            border: 5px solid orange;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            padding: 1em 1.5em;
+            margin: 0.5em;
+            border: 0;
+        }
+
+        #nameContainer {
+            font-size: 1.3em;
+            padding-bottom: 11px;
+            color: #ffffff;
+            margin-top: 10px;
+            position: absolute;
+            bottom: 2%;
+            left: 9%;
+            font-family: monospace;
+            background-color: orange;
+            border-radius: 50px;
+            padding: 0.5em;
+            width: 75%;
+            display: none;
+            font-weight: 600;
+            overflow: hidden;
+
+        }
+
+        #nameContainer img {
+            vertical-align: middle;
+            max-height: 80%;
+            margin-right: 5px;
+        }
+
+
+        #nameInput {
+            border: 1px solid #000000;
+            padding: 0.5em 1em;
+            border-radius: 4px;
+            margin-top: 5px;
+            width: 70%;
+        }
+
+        #imageUrlInput {
+            border: 1px solid #000000;
+            padding: 0.5em 1em;
+            border-radius: 4px;
+            margin-top: 5px;
+            width: 70%;
+        }
+
+
+        @media (max-width: 600px) {
+
+            #container {
+                width: 90%;
+            }
+
+            #imgholder {
+                right: 2%;
+                bottom: 2%;
+            }
+
+            #nameContainer {
+                font-size: 0.8em;
+                bottom: 5%;
+                left: 10%;
+                width: 80%;
+            }
+
+            #nameInput {
+                width: 60%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <h2>Post Maker</h2>
+        <div id="imageContainer" class="image">
+            <div id="imgholder">
+                <input type="file" id="fileInput" accept="image/*">
+            </div>
+            <div id="nameContainer"> </div>
+        </div>
+        <label for="fileInput">Choose Image</label>
+        <input type="text" id="nameInput" placeholder="Enter your name">
+        <input type="text" id="imageUrlInput" placeholder="Enter image URL">
+        <button class="button-35" onclick="uploadImage()">Make Post</button>
+        <button class="button-35" onclick="changeImage()">Change Image</button>
+        <button class="button-35" onclick="downloadImage()">Download Image</button>
+    </div>
+
+    <script>
+        function uploadImage() {
+            const fileInput = document.getElementById('fileInput');
+            const imageContainer = document.getElementById('imgholder');
+            const nameInput = document.getElementById('nameInput');
+            const nameContainer = document.getElementById('nameContainer');
+
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                imageContainer.style.backgroundImage = `url('${e.target.result}')`;
+                nameContainer.innerText = '';
+
+                const logoImg = document.createElement('img');
+                logoImg.src = 'https://www.speed-computers.com/img/sc%20logo.png';
+                logoImg.alt = 'Logo';
+                logoImg.style.marginRight = '7vw';
+                logoImg.style.height = '3vh';
+                logoImg.style.width = '1.4vw';
+                logoImg.style.marginLeft = '-9vw';
+
+                nameContainer.appendChild(logoImg);
+
+                const nameText = document.createElement('span');
+                nameText.innerText = nameInput.value;
+                nameContainer.appendChild(nameText);
+            };
+            reader.readAsDataURL(file);
+
+            nameContainer.style.display = "inline";
+            imageContainer.style.display = "inline";
+        }
+
+        function changeImage() {
+            const imageUrlInput = document.getElementById('imageUrlInput');
+            const imageContainer = document.getElementById('imageContainer');
+
+            const imageUrl = imageUrlInput.value.trim();
+            if (imageUrl === '') return;
+
+            imageContainer.style.backgroundImage = `url('${imageUrl}')`;
+        }
+
+        function downloadImage() {
+            const imageContainer = document.getElementById('imageContainer');
+            const nameContainer = document.getElementById('nameContainer').innerText;
+            html2canvas(imageContainer, {
+                allowTaint: true,
+                useCORS: true,
+                backgroundColor: null,
+                scale: 2 
+            }).then(canvas => {
+                const ctx = canvas.getContext('2d');
+                ctx.fillStyle = 'orange';
+                ctx.font = 'bold 16px Arial';
+                ctx.fillText(nameContainer, 20, canvas.height - 20); 
+                const imageData = canvas.toDataURL('image/png');
+                const tempLink = document.createElement('a');
+                tempLink.href = imageData;
+                tempLink.setAttribute('download', 'image.png');
+                document.body.appendChild(tempLink);
+                tempLink.click();
+                document.body.removeChild(tempLink);
+            });
+        }
+    </script>
+</body>
+
+
+</html>
